@@ -14,42 +14,45 @@
     <script>
     // Add Scene
     let scene = new THREE.Scene();
-    scene.background = new THREE.Color(00000);
+    scene.background = new THREE.Color(100000); // Updated background color
     // Add Camera
     let camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight);
-    // camera.position.z = 5; 
 
     //Render 
     let renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.shadowMap.enabled = true; // Enable shadow maps
     document.body.appendChild(renderer.domElement);
 
-    // Add Shape and tecture loader
+    // Add Shape and texture loader
     let textureLoader = new THREE.TextureLoader();
     let texture = textureLoader.load('/texture-fish.jpg');
     texture.wrapS = THREE.RepeatWrapping; // Set texture wrapping mode to repeat
     texture.wrapT = THREE.RepeatWrapping;
     texture.repeat.set( 1, 0); // Set the number of times the texture is repeated
 
-    // let geometry = new THREE.BoxGeometry();
     let geometry = new THREE.TorusGeometry(1.9,0.5,16,100);
-
-    // let material = new THREE.MeshBasicMaterial({color: 0x6888, wireframe: true});
-    let material = new THREE.MeshBasicMaterial({ map: texture });
-    let cube = new THREE.Mesh(geometry , material);
-
-    scene.add(cube);
-
-    camera.position.z= 5;
-
+    let material = new THREE.MeshPhongMaterial({ map: texture }); // Use MeshPhongMaterial instead of MeshBasicMaterial
+    let torus = new THREE.Mesh(geometry , material); // Use torus instead of cube
     
+    torus.castShadow = true; // Set torus to cast shadows
+    torus.receiveShadow = true; // Set torus to receive shadows
 
-    
+    scene.add(torus);
+
+    // Add a point light
+    let pointLight = new THREE.PointLight(1200000, 1, 100);
+    pointLight.position.set(0, 2, 5);
+    pointLight.castShadow = true; // Set point light to cast shadows
+    scene.add(pointLight);
+
+    camera.position.z = 5;
+
     //Animation
     let animate = function() {
         requestAnimationFrame(animate);
-        cube.rotation.x += 0.007;
-        cube.rotation.y += 0.0099;
+        torus.rotation.x += 0.007;
+        torus.rotation.y += 0.0099;
         renderer.render(scene, camera);
     }
     
