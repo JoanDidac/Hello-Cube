@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three JS Cube</title>
+</head>
+<body>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.152.2/three.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.152.2/three.js"></script>  -->
+
+    <script>
+    // Add Scene
+    let scene = new THREE.Scene();
+    scene.background = new THREE.Color(00000);
+    // Add Camera
+    let camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight);
+    // camera.position.z = 5; 
+
+    //Render 
+    let renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // Add Shape and tecture loader
+    let textureLoader = new THREE.TextureLoader();
+    let texture = textureLoader.load('/texture-fish.jpg');
+    texture.wrapS = THREE.RepeatWrapping; // Set texture wrapping mode to repeat
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set( 1, 0); // Set the number of times the texture is repeated
+
+    // let geometry = new THREE.BoxGeometry();
+    let geometry = new THREE.TorusGeometry(1.9,0.5,16,100);
+
+    // let material = new THREE.MeshBasicMaterial({color: 0x6888, wireframe: true});
+    let material = new THREE.MeshBasicMaterial({ map: texture });
+    let cube = new THREE.Mesh(geometry , material);
+
+    scene.add(cube);
+
+    camera.position.z= 5;
+
+    
+
+    
+    //Animation
+    let animate = function() {
+        requestAnimationFrame(animate);
+        cube.rotation.x += 0.007;
+        cube.rotation.y += 0.0099;
+        renderer.render(scene, camera);
+    }
+    
+    animate();
+    </script> 
+</body>
+</html>
