@@ -10,13 +10,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.152.2/three.min.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.152.2/three.js"></script>  -->
     <script src="https://threejs.org/examples/jsm/controls/OrbitControls.js"></script>
-    <script type="module"></script>
-
-
-    <script>
+    <script type="module">
+        // import { initOrbitControls, initFog } from './fog.js';
+        
       // Add Scene
       let scene = new THREE.Scene();
       scene.background = new THREE.Color(100000); // Updated background color
+
       // Add Camera
       let camera = new THREE.PerspectiveCamera(
         75,
@@ -45,6 +45,9 @@
 
       scene.add(torus);
 
+      // Add fog
+    //   initFog(scene, 1, 10, 0x505050, torus, camera);
+
       // Add a point light
       let pointLight = new THREE.PointLight(1200000, 1, 100);
       pointLight.position.set(0, 2, 5);
@@ -55,8 +58,8 @@
       scene.add(ambientLight);
 
       // Add a groundplane
-      let groundGeometry = new THREE.PlaneGeometry(10, 10);
-      let groundMaterial = new THREE.MeshPhongMaterial({ color: 0xaaaaaa });
+      let groundGeometry = new THREE.PlaneGeometry(15, 100);
+      let groundMaterial = new THREE.MeshPhongMaterial({ color: 0x73363 });
       let ground = new THREE.Mesh(groundGeometry, groundMaterial);
       ground.rotation.x = -Math.PI / 2; // rotate to make it horizontal
       ground.position.y = -2.31; // move it down a bit
