@@ -50,11 +50,11 @@
 
       // Add a point light
       let pointLight = new THREE.PointLight(1200000, 1, 100);
-      pointLight.position.set(0, 2, 5);
+      pointLight.position.set(1, 3, 5);
       pointLight.castShadow = true; // Set point light to cast shadows
       scene.add(pointLight);
 
-      let ambientLight = new THREE.AmbientLight(0x404040, 0.5); // soft white light
+      let ambientLight = new THREE.AmbientLight(0x404040, 0.2); // soft white light
       scene.add(ambientLight);
 
       // Add a groundplane
@@ -73,8 +73,10 @@
       //Animation
       let animate = function () {
         requestAnimationFrame(animate);
-        torus.rotation.x += 0.025;
-        torus.rotation.y += 0.00199;
+        torus.rotation.x += 0.01;
+        torus.rotation.y += 0.01;
+        // torus.rotation.x += 0.025;
+        // torus.rotation.y += 0.00199;
         renderer.render(scene, camera);
       };
 
