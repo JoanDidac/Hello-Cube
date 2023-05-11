@@ -1,62 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Three JS Cube</title>
-</head>
-<body>
-
+  </head>
+  <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.152.2/three.min.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.152.2/three.js"></script>  -->
+    <script src="https://threejs.org/examples/jsm/controls/OrbitControls.js"></script>
+    <script type="module"></script>
+
 
     <script>
-    // Add Scene
-    let scene = new THREE.Scene();
-    scene.background = new THREE.Color(100000); // Updated background color
-    // Add Camera
-    let camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight);
+      // Add Scene
+      let scene = new THREE.Scene();
+      scene.background = new THREE.Color(100000); // Updated background color
+      // Add Camera
+      let camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight
+      );
 
-    //Render 
-    let renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.shadowMap.enabled = true; // Enable shadow maps
-    document.body.appendChild(renderer.domElement);
+      //Render
+      let renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.shadowMap.enabled = true; // Enable shadow maps
+      document.body.appendChild(renderer.domElement);
 
-    // Add Shape and texture loader
-    let textureLoader = new THREE.TextureLoader();
-    let texture = textureLoader.load('/texture-fish.jpg');
-    texture.wrapS = THREE.RepeatWrapping; // Set texture wrapping mode to repeat
-    texture.wrapT = THREE.RepeatWrapping;
-    texture.repeat.set( 1, 0); // Set the number of times the texture is repeated
+      // Add Shape and texture loader
+      let textureLoader = new THREE.TextureLoader();
+      let texture = textureLoader.load("/texture-fish.jpg");
+      texture.wrapS = THREE.RepeatWrapping; // Set texture wrapping mode to repeat
+      texture.wrapT = THREE.RepeatWrapping;
+      texture.repeat.set(1, 0); // Set the number of times the texture is repeated
 
-    let geometry = new THREE.TorusGeometry(1.9,0.5,16,100);
-    let material = new THREE.MeshPhongMaterial({ map: texture }); // Use MeshPhongMaterial instead of MeshBasicMaterial
-    let torus = new THREE.Mesh(geometry , material); // Use torus instead of cube
-    
-    torus.castShadow = true; // Set torus to cast shadows
-    torus.receiveShadow = true; // Set torus to receive shadows
+      let geometry = new THREE.TorusGeometry(1.9, 0.5, 16, 100);
+      let material = new THREE.MeshPhongMaterial({ map: texture }); // Use MeshPhongMaterial instead of MeshBasicMaterial
+      let torus = new THREE.Mesh(geometry, material); // Use torus instead of cube
 
-    scene.add(torus);
+      torus.castShadow = true; // Set torus to cast shadows
+      torus.receiveShadow = true; // Set torus to receive shadows
 
-    // Add a point light
-    let pointLight = new THREE.PointLight(1200000, 1, 100);
-    pointLight.position.set(0, 2, 5);
-    pointLight.castShadow = true; // Set point light to cast shadows
-    scene.add(pointLight);
+      scene.add(torus);
 
-    camera.position.z = 5;
+      // Add a point light
+      let pointLight = new THREE.PointLight(1200000, 1, 100);
+      pointLight.position.set(0, 2, 5);
+      pointLight.castShadow = true; // Set point light to cast shadows
+      scene.add(pointLight);
 
-    //Animation
-    let animate = function() {
+      let ambientLight = new THREE.AmbientLight(0x404040, 0.5); // soft white light
+      scene.add(ambientLight);
+
+      // Add a groundplane
+      let groundGeometry = new THREE.PlaneGeometry(10, 10);
+      let groundMaterial = new THREE.MeshPhongMaterial({ color: 0xaaaaaa });
+      let ground = new THREE.Mesh(groundGeometry, groundMaterial);
+      ground.rotation.x = -Math.PI / 2; // rotate to make it horizontal
+      ground.position.y = -2.31; // move it down a bit
+      ground.receiveShadow = true;
+      scene.add(ground);
+
+      camera.position.z = 5;
+
+    //   let controls = new OrbitControls(camera, renderer.domElement);
+
+      //Animation
+      let animate = function () {
         requestAnimationFrame(animate);
-        torus.rotation.x += 0.007;
-        torus.rotation.y += 0.0099;
+        torus.rotation.x += 0.025;
+        torus.rotation.y += 0.00199;
         renderer.render(scene, camera);
-    }
-    
-    animate();
-    </script> 
-</body>
+      };
+
+      animate();
+    </script>
+  </body>
 </html>
